@@ -54,8 +54,6 @@ TaskHandle_t SendingHandle = NULL;
 TaskHandle_t BlinkHandle = NULL;
 uint8_t timer = 0;
 
-#if SPI_EN
-
 #define SPI_MASTER_FREQ_83      (APB_CLK_FREQ/960) // 83.33kHz
 #define PIN_NUM_LATCH 15
 #define PIN_NUM_MISO 27
@@ -90,14 +88,6 @@ void spi_init() {
   //Attach the SNES controller to the SPI bus
   ret=spi_bus_add_device(HSPI_HOST, &devcfg, &spi);
   ESP_ERROR_CHECK(ret);
-
-  // Timer for Data latch
-  const esp_timer_create_args_t latch_timer_args = {
-            .callback = latch_timer_callback,
-            .name = "latch_timer"
-  };
-  ESP_ERROR_CHECK(esp_timer_create(&latch_timer_args, &latch_timer));
-  spiSemaphore = xSemaphoreCreateBinary();
 
   // Data latch gpio config
   gpio_config_t SNES_gpio_conf = {
@@ -149,7 +139,6 @@ static void get_buttons() {
     vTaskDelay(15);
   }
 }
-#endif
 
 //Switch button report example //         batlvl       Buttons              Lstick           Rstick
 //static uint8_t report30[] = {0x30, 0x00, 0x90,   0x00, 0x00, 0x00,   0x00, 0x00, 0x00,   0x00, 0x00, 0x00};

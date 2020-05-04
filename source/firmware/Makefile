@@ -3,6 +3,6 @@
 # project subdirectory.
 #
 
-PROJECT_NAME := BlueCubeModv2
+PROJECT_NAME := OpenSwitchPad
 
 include $(IDF_PATH)/make/project.mk
